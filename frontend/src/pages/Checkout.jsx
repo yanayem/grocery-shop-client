@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, CreditCard, Truck, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import './Checkout.css';
 
 const Checkout = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
@@ -16,15 +15,15 @@ const Checkout = () => {
 
   if (orderPlaced) {
     return (
-      <div style={{ padding: '100px 20px', textAlign: 'center' }}>
-        <div style={{ background: '#72BF78', color: 'white', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyCenter: 'center', margin: '0 auto 30px' }}>
-          <Truck size={40} style={{ margin: '0 auto' }} />
+      <div className="py-[100px] px-5 text-center flex flex-col items-center">
+        <div className="bg-primary text-white w-20 h-20 rounded-full flex items-center justify-center mb-8 shadow-xl shadow-green-900/20">
+          <Truck size={40} />
         </div>
-        <h1>Order Placed Successfully!</h1>
-        <p style={{ color: '#636e72', marginTop: '10px' }}>Your groceries will be at your door within 1 hour.</p>
+        <h1 className="text-3xl font-extrabold text-gray-800">Order Placed Successfully!</h1>
+        <p className="text-gray-500 mt-3 text-lg">Your groceries will be at your door within 1 hour.</p>
         <button
           onClick={() => window.location.href = '/'}
-          style={{ marginTop: '30px', padding: '12px 30px', background: '#72BF78', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+          className="mt-8 py-3 px-8 bg-primary text-white border-none rounded-xl cursor-pointer font-bold transition-transform hover:scale-105"
         >
           Continue Shopping
         </button>
@@ -33,75 +32,91 @@ const Checkout = () => {
   }
 
   return (
-    <div className="checkout-container">
-      <h1 style={{ textAlign: 'left', marginBottom: '40px' }}>Checkout</h1>
+    <div className="px-[5%] py-10 min-h-[calc(100vh-65px)] bg-[#f8fcf8]">
+      <h1 className="text-3xl font-extrabold text-left mb-10 text-gray-800">Checkout</h1>
 
-      <form className="checkout-layout" onSubmit={handlePlaceOrder}>
-        <div className="checkout-form-section">
-          <div className="checkout-card">
-            <h3><MapPin size={22} color="#72BF78" /> Delivery Address</h3>
-            <div className="form-group">
-              <label>Full Name</label>
-              <input type="text" placeholder="Enter your full name" required />
+      <form className="flex gap-10 flex-wrap" onSubmit={handlePlaceOrder}>
+        <div className="flex-[2] min-w-[350px]">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-6 text-left">
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2.5 text-gray-800 border-b border-gray-50 pb-4">
+              <MapPin size={22} className="text-primary" /> Delivery Address
+            </h3>
+            <div className="mb-6">
+              <label className="block text-sm font-bold mb-2.5 text-gray-700 uppercase tracking-tight">Full Name</label>
+              <input type="text" placeholder="Enter your full name" className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-primary focus:bg-white transition-all" required />
             </div>
-            <div className="form-group">
-              <label>Delivery Address</label>
-              <textarea placeholder="Flat No, House No, Area Name" rows="3" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #dfe6e9' }} required></textarea>
+            <div className="mb-6">
+              <label className="block text-sm font-bold mb-2.5 text-gray-700 uppercase tracking-tight">Delivery Address</label>
+              <textarea placeholder="Flat No, House No, Area Name" rows="3" className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-primary focus:bg-white transition-all resize-none" required></textarea>
             </div>
-            <div style={{ display: 'flex', gap: '20px' }}>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Area</label>
-                <input type="text" placeholder="e.g. Uttara" required />
+            <div className="flex gap-5">
+              <div className="flex-1">
+                <label className="block text-sm font-bold mb-2.5 text-gray-700 uppercase tracking-tight">Area</label>
+                <input type="text" placeholder="e.g. Uttara" className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-primary focus:bg-white transition-all" required />
               </div>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Phone Number</label>
-                <input type="tel" placeholder="+880 1XXX XXXXXX" required />
+              <div className="flex-1">
+                <label className="block text-sm font-bold mb-2.5 text-gray-700 uppercase tracking-tight">Phone Number</label>
+                <input type="tel" placeholder="+880 1XXX XXXXXX" className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-primary focus:bg-white transition-all" required />
               </div>
             </div>
           </div>
 
-          <div className="checkout-card">
-            <h3><CreditCard size={22} color="#72BF78" /> Payment Method</h3>
-            <div className="payment-options">
-              <div className={`payment-method ${paymentMethod === 'cod' ? 'active' : ''}`} onClick={() => setPaymentMethod('cod')}>
-                <input type="radio" checked={paymentMethod === 'cod'} readOnly />
-                <span>Cash on Delivery</span>
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-6 text-left">
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2.5 text-gray-800 border-b border-gray-50 pb-4">
+              <CreditCard size={22} className="text-primary" /> Payment Method
+            </h3>
+            <div className="flex flex-col gap-4">
+              <div
+                className={`flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-primary bg-green-50/50 ring-2 ring-primary/10' : 'border-gray-200 hover:border-primary/50'}`}
+                onClick={() => setPaymentMethod('cod')}
+              >
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'cod' ? 'border-primary' : 'border-gray-300'}`}>
+                  {paymentMethod === 'cod' && <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>}
+                </div>
+                <span className="font-semibold text-gray-700">Cash on Delivery</span>
               </div>
-              <div className={`payment-method ${paymentMethod === 'bkash' ? 'active' : ''}`} onClick={() => setPaymentMethod('bkash')}>
-                <input type="radio" checked={paymentMethod === 'bkash'} readOnly />
-                <span>bKash / Rocket</span>
+              <div
+                className={`flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'bkash' ? 'border-primary bg-green-50/50 ring-2 ring-primary/10' : 'border-gray-200 hover:border-primary/50'}`}
+                onClick={() => setPaymentMethod('bkash')}
+              >
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'bkash' ? 'border-primary' : 'border-gray-300'}`}>
+                  {paymentMethod === 'bkash' && <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>}
+                </div>
+                <span className="font-semibold text-gray-700">bKash / Rocket</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="checkout-summary-section">
-          <div className="checkout-card">
-            <h3><ShoppingBag size={22} color="#72BF78" /> Order Summary</h3>
-            <div style={{ marginBottom: '20px' }}>
+        <div className="flex-1 min-w-[300px]">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-left sticky top-[105px]">
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2.5 text-gray-800 border-b border-gray-50 pb-4">
+              <ShoppingBag size={22} className="text-primary" /> Order Summary
+            </h3>
+            <div className="mb-6 space-y-3">
               {cartItems.map(item => (
-                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '0.9rem' }}>
-                  <span>{item.name} x {item.quantity}</span>
-                  <span>৳{item.price * item.quantity}</span>
+                <div key={item.id} className="flex justify-between items-center text-sm text-gray-600">
+                  <span className="font-medium">{item.name} <span className="text-xs text-gray-400 font-bold ml-1">x{item.quantity}</span></span>
+                  <span className="font-bold text-gray-700">৳{item.price * item.quantity}</span>
                 </div>
               ))}
             </div>
-            <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '15px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+            <div className="border-t border-gray-50 pt-5 space-y-3">
+              <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
-                <span>৳{getCartTotal()}</span>
+                <span className="font-bold">৳{getCartTotal()}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <div className="flex justify-between text-gray-600">
                 <span>Delivery Fee</span>
-                <span>৳45</span>
+                <span className="font-bold">৳45</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: '1.2rem', marginTop: '10px' }}>
-                <span>Total</span>
-                <span>৳{getCartTotal() + 45}</span>
+              <div className="flex justify-between items-center text-gray-900 pt-3">
+                <span className="text-lg font-bold">Total</span>
+                <span className="text-2xl font-black text-primary">৳{getCartTotal() + 45}</span>
               </div>
             </div>
 
-            <button type="submit" className="place-order-btn">
+            <button type="submit" className="w-full py-4.5 bg-primary text-white border-none rounded-2xl text-lg font-black mt-8 cursor-pointer shadow-lg shadow-green-900/10 hover:bg-secondary transition-all active:scale-[0.98]">
               Place Order
             </button>
           </div>

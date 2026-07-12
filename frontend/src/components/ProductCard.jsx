@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, ShoppingCart } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const ProductCard = ({ id, name, price, unit, image, discount }) => {
@@ -8,122 +8,41 @@ const ProductCard = ({ id, name, price, unit, image, discount }) => {
   const { addToCart } = useCart();
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Prevent navigating to detail page
+    e.stopPropagation();
     addToCart({ id, name, price, unit, image });
   };
 
   return (
-    <div style={cardStyle} className="product-card" onClick={() => navigate(`/product/${id}`)}>
+    <div
+      className="bg-white border border-gray-100 rounded-xl p-4 relative transition-all duration-300 cursor-pointer flex flex-col justify-between hover:shadow-md hover:border-primary/20 group"
+      onClick={() => navigate(`/product/${id}`)}
+    >
       {discount && (
-        <div style={discountBadge}>{discount}% OFF</div>
+        <div className="absolute top-2.5 left-2.5 bg-red-400 text-white px-2 py-0.5 rounded text-[0.75rem] font-bold z-[1]">
+          {discount}% OFF
+        </div>
       )}
-      <div style={imageContainer}>
-        <img src={image} alt={name} style={imageStyle} />
+      <div className="w-full h-[150px] flex items-center justify-center mb-4">
+        <img src={image} alt={name} className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform" />
       </div>
-      <div style={infoStyle}>
-        <h4 style={nameStyle}>{name}</h4>
-        <p style={unitStyle}>{unit}</p>
-        <div style={priceContainer}>
-          <span style={priceStyle}>৳{price}</span>
-          <button style={addBtnStyle} onClick={handleAddToCart} onMouseOver={(e) => e.currentTarget.style.background = '#A0D683'} onMouseOut={(e) => e.currentTarget.style.background = '#72BF78'}>
+      <div className="text-left">
+        <h4 className="text-[1rem] font-semibold text-gray-800 mb-1 h-[2.4rem] overflow-hidden line-clamp-2">
+          {name}
+        </h4>
+        <p className="text-[0.85rem] text-gray-500 mb-4">{unit}</p>
+        <div className="flex justify-between items-center mt-auto">
+          <span className="text-[1.2rem] font-bold text-gray-800">৳{price}</span>
+          <button
+            className="bg-primary text-white border-none p-2 rounded-lg text-[0.85rem] font-semibold flex items-center gap-1.5 transition-colors hover:bg-secondary"
+            onClick={handleAddToCart}
+          >
             <Plus size={18} />
-            Add to Cart
+            Add
           </button>
         </div>
       </div>
     </div>
   );
-};
-
-const cardStyle = {
-  background: '#fff',
-  border: '1px solid #f0f0f0',
-  borderRadius: '12px',
-  padding: '15px',
-  position: 'relative',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-};
-
-const discountBadge = {
-  position: 'absolute',
-  top: '10px',
-  left: '10px',
-  background: '#ff7675',
-  color: '#fff',
-  padding: '2px 8px',
-  borderRadius: '4px',
-  fontSize: '0.75rem',
-  fontWeight: '700',
-  zIndex: 1
-};
-
-const imageContainer = {
-  width: '100%',
-  height: '150px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '15px'
-};
-
-const imageStyle = {
-  maxWidth: '100%',
-  maxHeight: '100%',
-  objectFit: 'contain'
-};
-
-const infoStyle = {
-  textAlign: 'left'
-};
-
-const nameStyle = {
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: '#2d3436',
-  marginBottom: '5px',
-  height: '2.4rem',
-  overflow: 'hidden',
-  display: '-webkit-box',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical'
-};
-
-const unitStyle = {
-  fontSize: '0.85rem',
-  color: '#636e72',
-  marginBottom: '15px'
-};
-
-const priceContainer = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: 'auto'
-};
-
-const priceStyle = {
-  fontSize: '1.2rem',
-  fontWeight: '700',
-  color: '#2d3436'
-};
-
-const addBtnStyle = {
-  background: '#72BF78',
-  color: '#fff',
-  border: 'none',
-  padding: '8px 12px',
-  borderRadius: '8px',
-  fontSize: '0.85rem',
-  fontWeight: '600',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '5px',
-  cursor: 'pointer',
-  transition: 'background 0.2s'
 };
 
 export default ProductCard;

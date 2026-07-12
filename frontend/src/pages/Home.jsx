@@ -1,99 +1,82 @@
 import React from 'react';
-import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Heart, ShieldCheck, Clock, Star, Zap } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import ProductSlider from '../components/ProductSlider';
+import { products } from '../data/products';
 
 const Home = () => {
-  const dummyProducts = [
-    { id: 1, name: 'Fresh Organic Roma Tomatoes', price: 60, unit: '1 kg', image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/fb6e5b4b74e6443c94d075d9e5d4d3f3.jpg', discount: 10 },
-    { id: 2, name: 'Green Cucumber', price: 40, unit: '500 g', image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/a4a8d43d1a8449c09a8f17a94f0e7d56.jpg' },
-    { id: 3, name: 'Broccoli (Imported)', price: 120, unit: '1 pc', image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/f39c1f6b1e2a4a9b8e8a7f6d5c4b3a21.jpg', discount: 5 },
-    { id: 4, name: 'Red Onion (Premium)', price: 85, unit: '1 kg', image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/9c8b7a6e5d4c3b2a1a0987654321fedc.jpg' },
-    { id: 5, name: 'Farm Fresh Eggs (Brown)', price: 145, unit: '12 pcs', image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/1234567890abcdef1234567890abcdef.jpg' },
-  ];
+  const navigate = useNavigate();
+
+  // Filter some featured products for the slider
+  const featuredProducts = products.slice(0, 8);
 
   return (
-    <div style={{ width: '100%' }}>
-      {/* Banner Section */}
-      <section style={{
-        width: '100%',
-        height: '450px',
-        background: 'linear-gradient(135deg, #f8fdf9 0%, #ffffff 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 5%',
-        boxSizing: 'border-box',
-        borderBottom: '1px solid #f0f0f0'
-      }}>
-        <div style={{ flex: '1' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#72BF78', fontWeight: '700', marginBottom: '15px' }}>
-            <Zap size={20} fill="#72BF78" />
-            <span>Fastest Delivery in Dhaka</span>
+    <div className="w-full">
+      {/* Brand-Specific Hero Section */}
+      <section className="w-[95%] min-h-[480px] bg-gradient-to-br from-[#f0f7f1] to-[#fffbf0] flex items-center px-[5%] py-[60px] box-border my-5 mx-auto rounded-[40px] relative overflow-hidden border border-[#e1eee3]">
+        <div className="flex-[1.2] z-[2]">
+          <div className="inline-flex items-center gap-2 bg-soft text-primary px-5 py-2 rounded-full font-extrabold text-[0.85rem] mb-6">
+            <Star size={16} fill="currentColor" />
+            <span>EXPRESS DELIVERY IN DHAKA</span>
           </div>
-          <h1 style={{ fontSize: '3.8rem', lineHeight: '1.1', marginBottom: '20px', color: '#2d3436' }}>
-            Fresh Groceries <br /> <span style={{ color: '#72BF78' }}>Daily Essentials</span>
+          <h1 className="text-[4rem] mt-2.5 mb-6 text-primary leading-[1.05] font-extrabold">
+            Freshness that <br />
+            <span className="text-accent italic">you can taste.</span>
           </h1>
-          <p style={{ fontSize: '1.2rem', color: '#636e72', marginBottom: '35px', maxWidth: '500px' }}>
-            Get the best quality products delivered to your doorstep with our express delivery service.
+          <p className="text-[1.15rem] text-gray-600 mb-10 max-w-[500px] leading-relaxed">
+            Quality groceries sourced directly from local farms. Pure, organic, and formalin-free for your family.
           </p>
-          <button style={{
-            padding: '16px 40px',
-            background: '#72BF78',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '12px',
-            fontSize: '1.1rem',
-            fontWeight: '700',
-            boxShadow: '0 4px 15px rgba(114, 191, 120, 0.3)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
-          }}>
-            Start Shopping <ArrowRight size={20} />
+          <div className="flex gap-5">
+            <button className="py-[18px] px-[45px] bg-primary text-white border-none rounded-[15px] text-[1.1rem] font-bold cursor-pointer flex items-center gap-3 hover:opacity-90">
+              Start Bazaar <ArrowRight size={20} />
+            </button>
+          </div>
+        </div>
+        <div className="flex-1 flex justify-center relative">
+          <div className="absolute w-[400px] h-[400px] bg-soft rounded-full opacity-30 z-[1]"></div>
+          <img
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=700"
+            alt="Fresh Produce"
+            className="w-full max-w-[550px] rounded-[30px] relative z-[2] shadow-[0_20px_50px_rgba(35,114,39,0.15)]"
+          />
+        </div>
+      </section>
+
+      {/* Trust & Quality Badges */}
+      <section className="px-[5%] py-[50px] bg-white flex justify-around flex-wrap gap-10 border-b border-gray-100">
+        <TrustBadge Item={ShieldCheck} title="Purity Guaranteed" color="#237227" />
+        <TrustBadge Item={Clock} title="60 Min Delivery" color="#FFAA00" />
+        <TrustBadge Item={Heart} title="Hand-Picked" color="#519A66" />
+      </section>
+
+      {/* Product Slider Section */}
+      <section className="px-[5%] pt-10">
+        <ProductSlider title="Trending Deals" products={featuredProducts} />
+      </section>
+
+      {/* Categorized Grid */}
+      <section className="px-[5%] py-[80px]">
+        <h2 className="text-[2.2rem] mb-[50px] text-center font-extrabold text-gray-800">Explore by Category</h2>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-[30px]">
+          <CategoryBox id="vegetables" title="Vegetables" Icon={ShoppingBasket} color="#237227" bg="#f0f7f1" navigate={navigate} />
+          <CategoryBox id="fruits-vegetables" title="Fresh Fruits" Icon={Apple} color="#FFAA00" bg="#fff9f0" navigate={navigate} />
+          <CategoryBox id="dairy-eggs" title="Dairy & Eggs" Icon={Droplets} color="#519A66" bg="#f2f9f5" navigate={navigate} />
+          <CategoryBox id="bakery" title="Bakery Items" Icon={Cookie} color="#FFAA00" bg="#fffbf0" navigate={navigate} />
+          <CategoryBox id="beverages" title="Beverages" Icon={Coffee} color="#237227" bg="#f1f6f2" navigate={navigate} />
+        </div>
+      </section>
+
+      {/* Daily Essentials Grid */}
+      <section className="px-[5%] pb-[100px]">
+        <div className="flex justify-between items-center mb-[45px]">
+          <h2 className="text-[2rem] font-extrabold text-gray-800">Daily Essentials</h2>
+          <button className="text-primary font-extrabold bg-transparent border-none text-[1rem] cursor-pointer hover:underline">
+            View All →
           </button>
         </div>
-        <div style={{ flex: '1', textAlign: 'center' }}>
-           <img
-            src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600"
-            alt="Grocery"
-            style={{ width: '100%', maxWidth: '550px', borderRadius: '30px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-           />
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section style={{ padding: '80px 5%' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.2rem' }}>Popular Categories</h2>
-          <span style={{ color: '#72BF78', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            View All <ArrowRight size={18} />
-          </span>
-        </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: '25px'
-        }}>
-          <CategoryCard title="Vegetables" Icon={ShoppingBasket} color="#f2f9f3" iconColor="#72BF78" />
-          <CategoryCard title="Fresh Fruits" Icon={Apple} color="#fff5f5" iconColor="#ff7675" />
-          <CategoryCard title="Dairy & Eggs" Icon={Droplets} color="#f0f7ff" iconColor="#0984e3" />
-          <CategoryCard title="Bakery" Icon={Cookie} color="#fffbf0" iconColor="#fdcb6e" />
-          <CategoryCard title="Beverages" Icon={Coffee} color="#f8f4ff" iconColor="#6c5ce7" />
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section style={{ padding: '0 5% 80px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '2.2rem' }}>Daily Essentials</h2>
-          <span style={{ color: '#72BF78', fontWeight: '700', cursor: 'pointer' }}>See More</span>
-        </div>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: '20px'
-        }}>
-          {dummyProducts.map(product => (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-[25px]">
+          {products.slice(0, 10).map(product => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
@@ -102,31 +85,33 @@ const Home = () => {
   );
 };
 
-const CategoryCard = ({ title, Icon, color, iconColor }) => (
-  <div style={{
-    background: color,
-    padding: '40px 20px',
-    borderRadius: '20px',
-    textAlign: 'center',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    border: '1px solid transparent'
-  }}
-  onMouseOver={(e) => {
-    e.currentTarget.style.transform = 'translateY(-8px)';
-    e.currentTarget.style.borderColor = '#A0D683';
-    e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.05)';
-  }}
-  onMouseOut={(e) => {
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.borderColor = 'transparent';
-    e.currentTarget.style.boxShadow = 'none';
-  }}
+const CategoryBox = ({ id, title, Icon, color, bg, navigate }) => (
+  <div
+    onClick={() => navigate(`/category/subcategory/${id}`)}
+    className="px-5 py-10 rounded-[25px] text-center cursor-pointer transition-all duration-300 border-2 border-transparent hover:-translate-y-2 hover:bg-white"
+    style={{ background: bg }}
+    onMouseOver={(e) => {
+      e.currentTarget.style.borderColor = color;
+      e.currentTarget.style.boxShadow = `0 15px 30px -10px ${color}44`;
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.borderColor = 'transparent';
+      e.currentTarget.style.boxShadow = 'none';
+    }}
   >
-    <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-      <Icon size={48} color={iconColor} strokeWidth={1.5} />
+    <div className="mb-5 flex justify-center" style={{ color: color }}>
+      <Icon size={48} strokeWidth={1.5} />
     </div>
-    <h3 style={{ fontSize: '1.2rem', color: '#2d3436' }}>{title}</h3>
+    <h3 className="text-[1.1rem] font-extrabold text-gray-800">{title}</h3>
+  </div>
+);
+
+const TrustBadge = ({ Item, title, color }) => (
+  <div className="flex items-center gap-[15px]">
+    <div className="p-3 rounded-[15px]" style={{ background: `${color}15`, color: color }}>
+      <Item size={28} />
+    </div>
+    <span className="font-extrabold text-[1.1rem] text-[#1b261b]">{title}</span>
   </div>
 );
 
