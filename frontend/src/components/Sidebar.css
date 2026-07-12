@@ -1,0 +1,70 @@
+.chaldal-sidebar {
+  width: 240px;
+  height: calc(100vh - 65px); /* Full height minus navbar */
+  background: #ffffff;
+  border-right: 1px solid var(--border-color);
+  position: fixed;
+  top: 65px;
+  left: 0;
+  overflow-y: auto;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.sidebar-header h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sidebar-menu {
+  padding: 10px 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.menu-item:hover {
+  background-color: #f8fdf9;
+  color: var(--accent-green);
+}
+
+.menu-item span {
+  flex: 1;
+}
+
+/* Custom scrollbar for sidebar */
+.chaldal-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chaldal-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chaldal-sidebar::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+
+@media (max-width: 1024px) {
+  .chaldal-sidebar {
+    display: none; /* Hide by default on mobile, would need state to toggle */
+  }
+}
