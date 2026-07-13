@@ -20,16 +20,6 @@ const Sidebar = () => {
     navigate(`/category/${type}/${id}`);
   };
 
-  // Map category IDs to their specific multi-color theme
-  const getColor = (id) => {
-    const colors = {
-      'food': '#237227',
-      'cleaning-household': '#3b82f6',
-      'personal-care': '#ec4899',
-    };
-    return colors[id] || '#237227';
-  };
-
   return (
     <aside className="hidden lg:block w-[240px] h-[calc(100vh-65px)] bg-white border-r border-gray-200 fixed top-[65px] left-0 overflow-y-auto z-[900] text-left scrollbar-hide">
       <div className="px-6 py-5 border-b border-gray-50">

@@ -28,6 +28,7 @@ const Footer = () => {
           <h4 className="mb-6 text-sm font-black uppercase tracking-widest text-gray-800">Quick Links</h4>
           <ul className="list-none p-0 text-gray-500 font-bold space-y-3">
             <li className="cursor-pointer hover:text-primary transition-colors"><Link to="/">Home</Link></li>
+            <li className="cursor-pointer hover:text-primary transition-colors"><Link to="/orders">My Orders</Link></li>
             <li className="cursor-pointer hover:text-primary transition-colors"><Link to="/about">About Us</Link></li>
             <li className="cursor-pointer hover:text-primary transition-colors"><Link to="/contact">Contact</Link></li>
           </ul>

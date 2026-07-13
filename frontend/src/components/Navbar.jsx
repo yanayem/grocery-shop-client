@@ -1,17 +1,42 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useLocation } from '../context/LocationContext';
+import { LogOut, User, MapPin, ChevronDown, LocateFixed } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { getCartCount } = useCart();
+  const { currentUser, logout } = useAuth();
+  const { location, updateLocation, detectLocation } = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLocModal, setShowLocModal] = useState(false);
+
+  const cities = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna', 'Barisal', 'Rangpur', 'Mymensingh'];
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search?q=${searchQuery}`);
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Logged out successfully');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Failed to log out');
+    }
+  };
+
+  const handleSelectLocation = (city) => {
+    updateLocation(city);
+    setShowLocModal(false);
+    toast.success(`Location set to ${city}`);
   };
 
   return (
@@ -43,8 +68,17 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-5">
-        <div className="text-[0.9rem] font-semibold text-gray-500 cursor-pointer">
-          <span>Dhaka</span>
+        <div
+          className="flex items-center gap-1.5 text-[0.9rem] font-bold text-gray-700 cursor-pointer hover:text-primary transition-colors bg-gray-50 px-3 py-2 rounded-lg border border-gray-100"
+          onClick={() => setShowLocModal(true)}
+        >
+          <MapPin size={16} className="text-primary" />
+          <span>{location}</span>
+          <ChevronDown size={14} className="text-gray-400" />
+        </div>
+
+        <div className="text-[0.9rem] font-semibold text-gray-500 cursor-pointer hidden md:block" onClick={() => navigate('/orders')}>
+          <span>My Orders</span>
         </div>
         <div className="text-[0.9rem] font-semibold text-gray-500 cursor-pointer hidden md:block">
           <span>Help & More</span>
@@ -58,13 +92,65 @@ const Navbar = () => {
             {getCartCount()}
           </span>
         </div>
-        <button
-          className="bg-primary text-white border-none py-2.5 px-5 rounded-lg font-bold text-[0.9rem] hover:bg-secondary"
-          onClick={() => navigate('/login')}
-        >
-          Sign In
-        </button>
+
+        {currentUser ? (
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-gray-700 font-bold text-sm bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
+              <User size={18} className="text-primary" />
+              <span className="max-w-[100px] truncate">{currentUser.displayName || 'User'}</span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-2.5 text-gray-500 hover:text-red-500 transition-colors"
+              title="Logout"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        ) : (
+          <button
+            className="bg-primary text-white border-none py-2.5 px-5 rounded-lg font-bold text-[0.9rem] hover:bg-secondary"
+            onClick={() => navigate('/login')}
+          >
+            Sign In
+          </button>
+        )}
       </div>
+
+      {/* Location Selection Modal */}
+      {showLocModal && (
+        <div className="fixed inset-0 bg-black/50 z-[2000] flex items-center justify-center p-5">
+          <div className="bg-white w-full max-w-[400px] p-8 animate-in fade-in zoom-in duration-200">
+            <h3 className="text-xl font-black mb-6 text-gray-800">Select Delivery Location</h3>
+
+            <button
+              onClick={() => { detectLocation(); setShowLocModal(false); }}
+              className="w-full mb-6 py-3 px-4 bg-primary/10 text-primary font-bold flex items-center justify-center gap-2 hover:bg-primary/20 transition-all border border-primary/20"
+            >
+              <LocateFixed size={18} /> Detect My Location
+            </button>
+
+            <div className="grid grid-cols-2 gap-3">
+              {cities.map(city => (
+                <button
+                  key={city}
+                  onClick={() => handleSelectLocation(city)}
+                  className={`py-3 px-4 text-sm font-bold border transition-all ${location === city ? 'border-primary bg-green-50 text-primary' : 'border-gray-100 hover:border-primary/50 text-gray-600'}`}
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setShowLocModal(false)}
+              className="w-full mt-8 py-3 text-gray-400 font-bold hover:text-gray-600 transition-colors uppercase tracking-widest text-xs"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

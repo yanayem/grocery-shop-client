@@ -1,8 +1,8 @@
-# GroceryFresh - Modern Online Grocery Shop
+# 🥦 GroceryFresh - Modern Online Grocery Shop
 
 GroceryFresh is a vibrant, human-centric online grocery platform built with React and Tailwind CSS v4. It features a professional layout inspired by modern e-commerce sites like Chaldal, with a focus on speed, reliability, and a warm user experience.
 
-## ✨ Features
+## 🥦 Features
 
 - 🛒 **Full Shopping Flow**: From product discovery to cart management and checkout.
 - 📂 **Nested Categories**: Multi-level navigation (Main > Sub > Sub-sub categories).
@@ -38,7 +38,7 @@ GroceryFresh is a vibrant, human-centric online grocery platform built with Reac
 
 2. Navigate to the frontend directory:
    ```bash
-   cd grocery-shop/frontend
+   cd grocery-shop-client/frontend
    ```
 
 3. Install dependencies:

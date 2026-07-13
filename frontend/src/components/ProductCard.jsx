@@ -14,7 +14,7 @@ const ProductCard = ({ id, name, price, unit, image, discount }) => {
 
   return (
     <div
-      className="bg-white border border-gray-100 rounded-xl p-4 relative transition-all duration-300 cursor-pointer flex flex-col justify-between hover:shadow-md hover:border-primary/20 group"
+      className="bg-white border border-gray-100 rounded-none p-4 relative transition-all duration-300 cursor-pointer flex flex-col justify-between hover:shadow-md hover:border-primary/20 group"
       onClick={() => navigate(`/product/${id}`)}
     >
       {discount && (

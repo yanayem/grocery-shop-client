@@ -12,10 +12,12 @@ import CategoryPage from './pages/CategoryPage';
 import SearchResults from './pages/SearchResults';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Orders from './pages/Orders';
 import AboutUs from './pages/AboutUs';
 import ContactUs from './pages/ContactUs';
 import FAQ from './pages/FAQ';
 import LiveChat from './components/LiveChat';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -23,9 +25,9 @@ function App() {
       <div className="min-h-screen bg-[#f8fcf8]">
         <Toaster position="top-right" />
         <Navbar />
-        <div className="flex">
+        <div className="relative">
           <Sidebar />
-          <main className="flex-1 lg:ml-[240px] w-full min-h-[calc(100vh-65px)] flex flex-col bg-white">
+          <main className="lg:ml-[240px] min-h-[calc(100vh-65px)] flex flex-col bg-white">
             <div className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -35,7 +37,22 @@ function App() {
                 <Route path="/category/:type/:id" element={<CategoryPage />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <Checkout />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <Orders />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/faq" element={<FAQ />} />

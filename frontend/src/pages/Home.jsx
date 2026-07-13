@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Heart, ShieldCheck, Clock, Star, Zap } from 'lucide-react';
+import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Heart, ShieldCheck, Clock, Star } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import ProductSlider from '../components/ProductSlider';
 import { products } from '../data/products';
@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* Brand-Specific Hero Section */}
-      <section className="w-[95%] min-h-[480px] bg-gradient-to-br from-[#f0f7f1] to-[#fffbf0] flex items-center px-[5%] py-[60px] box-border my-5 mx-auto rounded-[40px] relative overflow-hidden border border-[#e1eee3]">
+      <section className="w-[95%] min-h-[480px] bg-gradient-to-br from-[#f0f7f1] to-[#fffbf0] flex items-center px-[5%] py-[60px] box-border my-5 mx-auto rounded-none relative overflow-hidden border border-[#e1eee3]">
         <div className="flex-[1.2] z-[2]">
           <div className="inline-flex items-center gap-2 bg-soft text-primary px-5 py-2 rounded-full font-extrabold text-[0.85rem] mb-6">
             <Star size={16} fill="currentColor" />
@@ -28,7 +28,7 @@ const Home = () => {
             Quality groceries sourced directly from local farms. Pure, organic, and formalin-free for your family.
           </p>
           <div className="flex gap-5">
-            <button className="py-[18px] px-[45px] bg-primary text-white border-none rounded-[15px] text-[1.1rem] font-bold cursor-pointer flex items-center gap-3 hover:opacity-90">
+            <button className="py-[18px] px-[45px] bg-primary text-white border-none rounded-none text-[1.1rem] font-bold cursor-pointer flex items-center gap-3 hover:opacity-90">
               Start Bazaar <ArrowRight size={20} />
             </button>
           </div>
@@ -38,7 +38,7 @@ const Home = () => {
           <img
             src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=700"
             alt="Fresh Produce"
-            className="w-full max-w-[550px] rounded-[30px] relative z-[2] shadow-[0_20px_50px_rgba(35,114,39,0.15)]"
+            className="w-full max-w-[550px] rounded-none relative z-[2] shadow-[0_20px_50px_rgba(35,114,39,0.15)]"
           />
         </div>
       </section>
@@ -88,7 +88,7 @@ const Home = () => {
 const CategoryBox = ({ id, title, Icon, color, bg, navigate }) => (
   <div
     onClick={() => navigate(`/category/subcategory/${id}`)}
-    className="px-5 py-10 rounded-[25px] text-center cursor-pointer transition-all duration-300 border-2 border-transparent hover:-translate-y-2 hover:bg-white"
+    className="px-5 py-10 rounded-none text-center cursor-pointer transition-all duration-300 border-2 border-transparent hover:-translate-y-2 hover:bg-white"
     style={{ background: bg }}
     onMouseOver={(e) => {
       e.currentTarget.style.borderColor = color;
@@ -108,7 +108,7 @@ const CategoryBox = ({ id, title, Icon, color, bg, navigate }) => (
 
 const TrustBadge = ({ Item, title, color }) => (
   <div className="flex items-center gap-[15px]">
-    <div className="p-3 rounded-[15px]" style={{ background: `${color}15`, color: color }}>
+    <div className="p-3 rounded-none" style={{ background: `${color}15`, color: color }}>
       <Item size={28} />
     </div>
     <span className="font-extrabold text-[1.1rem] text-[#1b261b]">{title}</span>
