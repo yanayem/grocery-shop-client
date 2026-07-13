@@ -43,4 +43,24 @@ class OrderController extends Controller
         $orders = Order::where('user.email', $request->user_email)->get();
         return response()->json($orders);
     }
+
+    // Admin: Get all orders
+    public function index()
+    {
+        $orders = Order::orderBy('created_at', 'desc')->get();
+        return response()->json($orders);
+    }
+
+    // Admin: Update order status
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string|in:pending,processing,shipped,delivered,cancelled'
+        ]);
+
+        $order = Order::findOrFail($id);
+        $order->update(['status' => $request->status]);
+
+        return response()->json(['message' => 'Order status updated', 'order' => $order]);
+    }
 }

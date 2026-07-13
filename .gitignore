@@ -1,0 +1,14 @@
+node_modules/
+.idea/
+.env
+dist/
+build/
+*.log
+laravel-backend/vendor/
+laravel-backend/.env
+laravel-backend/storage/*.key
+laravel-backend/public/storage
+laravel-backend/public/hot
+laravel-backend/public/build
+frontend/node_modules/
+frontend/dist/
