@@ -1,0 +1,25 @@
+{
+  "name": "grocery-shop",
+  "version": "1.0.0",
+  "description": "GroceryFresh is a vibrant, human-centric online grocery platform built with React and Tailwind CSS v4. It features a professional layout inspired by modern e-commerce sites like Chaldal, with a focus on speed, reliability, and a warm user experience.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd laravel-backend && php artisan serve\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanayem/grocery-shop-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yanayem/grocery-shop-client/issues"
+  },
+  "homepage": "https://github.com/yanayem/grocery-shop-client#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
