@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from 'firebase/auth';
+import { Eye, EyeOff } from 'lucide-react';
 import { auth, googleProvider } from '../firebase';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -16,6 +17,8 @@ const Registration = () => {
     password: '',
     confirmPassword: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Redirect if already logged in
@@ -41,6 +44,11 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      return toast.error('Passwords do not match');
+    }
+
     setLoading(true);
 
     try {
@@ -121,17 +129,48 @@ const Registration = () => {
             />
           </div>
 
-          <div className="mb-8">
+          <div className="mb-6">
             <label className="block text-xs font-black mb-2 text-gray-700 uppercase tracking-wider">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-primary focus:bg-white transition-all"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="••••••••"
+                className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-primary focus:bg-white transition-all pr-12"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <label className="block text-xs font-black mb-2 text-gray-700 uppercase tracking-wider">Confirm Password</label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="••••••••"
+                className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-none outline-none focus:border-primary focus:bg-white transition-all pr-12"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-start gap-3 mb-8 text-[0.85rem] text-gray-500">

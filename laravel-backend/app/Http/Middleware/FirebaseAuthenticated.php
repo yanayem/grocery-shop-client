@@ -20,7 +20,13 @@ class FirebaseAuthenticated
         $idToken = str_replace('Bearer ', '', $authHeader);
 
         try {
-            $factory = (new Factory)->withServiceAccount(config('firebase.projects.app.credentials'));
+            $credentials = config('firebase.projects.app.credentials');
+
+            if (!$credentials['project_id'] || !$credentials['private_key']) {
+                return response()->json(['message' => 'Firebase credentials not configured in .env'], 500);
+            }
+
+            $factory = (new Factory)->withServiceAccount($credentials);
             $auth = $factory->createAuth();
             $verifiedIdToken = $auth->verifyIdToken($idToken);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -22,16 +22,18 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 
 function App() {
+  const location = useLocation();
+  const hideSidebar = ['/login', '/signup'].includes(location.pathname) || location.pathname.startsWith('/admin');
+
   return (
-    <Router>
-      <div className="min-h-screen bg-[#f8fcf8]">
-        <Toaster position="top-right" />
-        <Navbar />
-        <div className="relative">
-          <Sidebar />
-          <main className="lg:ml-[240px] min-h-[calc(100vh-65px)] flex flex-col bg-white">
-            <div className="flex-1">
-              <Routes>
+    <div className="min-h-screen bg-[#f8fcf8]">
+      <Toaster position="top-right" />
+      <Navbar />
+      <div className="relative">
+        {!hideSidebar && <Sidebar />}
+        <main className={`${!hideSidebar ? 'lg:ml-[240px]' : ''} min-h-[calc(100vh-65px)] flex flex-col bg-white`}>
+          <div className="flex-1">
+            <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Registration />} />
@@ -67,13 +69,12 @@ function App() {
                   }
                 />
               </Routes>
-            </div>
-            <Footer />
-          </main>
-        </div>
-        <LiveChat />
+          </div>
+          <Footer />
+        </main>
       </div>
-    </Router>
+      <LiveChat />
+    </div>
   );
 }
 
