@@ -1,27 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Minus, Plus, ShoppingCart, Heart, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
-  const product = {
-    id: id,
-    name: 'Fresh Organic Roma Tomatoes',
-    price: 60,
-    unit: '1 kg',
-    image: 'https://cdn.chaldal.com/_resizer/180x180/static/product/images/fb6e5b4b74e6443c94d075d9e5d4d3f3.jpg',
-    description: 'Our organic Roma tomatoes are vine-ripened to perfection, offering a rich, sweet flavor and firm texture. Perfect for sauces, salads, or roasting. Grown without synthetic pesticides or fertilizers, these tomatoes bring the pure taste of nature to your kitchen.',
-    category: 'Vegetables'
-  };
+  useEffect(() => {
+    fetch(`http://localhost:8000/api/products/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setProduct(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching product details:', err);
+        setLoading(false);
+      });
+  }, [id]);
 
   const handleQuantity = (type) => {
     if (type === 'minus' && quantity > 1) setQuantity(quantity - 1);
     if (type === 'plus') setQuantity(quantity + 1);
   };
+
+  if (loading) return <div className="px-[5%] py-24 text-center">Loading product details...</div>;
+  if (!product) return <div className="px-[5%] py-24 text-center text-red-500">Product not found</div>;
 
   return (
     <div className="px-[5%] py-10 bg-white min-h-[calc(100vh-65px)]">

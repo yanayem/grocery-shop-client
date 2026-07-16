@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 const Navbar = () => {
   const navigate = useNavigate();
   const { getCartCount } = useCart();
-  const { currentUser, logout } = useAuth();
+  const { currentUser, userData, logout } = useAuth();
   const { location, updateLocation, detectLocation } = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocModal, setShowLocModal] = useState(false);
@@ -80,11 +80,6 @@ const Navbar = () => {
         <div className="text-[0.9rem] font-semibold text-gray-500 cursor-pointer hidden md:block" onClick={() => navigate('/orders')}>
           <span>My Orders</span>
         </div>
-        {currentUser && (
-          <div className="text-[0.9rem] font-semibold text-primary cursor-pointer hidden md:block" onClick={() => navigate('/admin')}>
-            <span>Admin Panel</span>
-          </div>
-        )}
         <div className="text-[0.9rem] font-semibold text-gray-500 cursor-pointer hidden md:block">
           <span>Help & More</span>
         </div>

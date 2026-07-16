@@ -51,6 +51,37 @@ GroceryFresh is a vibrant, human-centric online grocery platform built with Reac
    npm run dev
    ```
 
+## 🏗️ Project Architecture
+
+GroceryFresh follows a decoupled **Client-Server Architecture** to ensure scalability and high performance.
+
+### 1. High-Level Overview
+- **Frontend**: A Single Page Application (SPA) built with React, serving as the user and admin interface.
+- **Backend**: A RESTful API built with Laravel (PHP), handling business logic, data persistence, and security.
+- **Database**: MongoDB (NoSQL) for flexible data modeling, specifically suitable for catalog-heavy e-commerce.
+- **Authentication**: Firebase Authentication (Google) for secure, managed user identity.
+
+### 2. Backend Architecture (Laravel + MongoDB)
+- **Database Driver**: Uses `mongodb/laravel-mongodb` to seamlessly integrate Eloquent with MongoDB collections.
+- **Security Middleware**: 
+    - `Firebase.auth`: Custom middleware to verify Firebase JWT tokens on every private request.
+    - `CheckAdmin`: Role-based middleware to restrict access to the Admin Dashboard.
+- **Models**: Decoupled models for `Product`, `Category`, `Order`, and `User` using MongoDB schemas.
+
+### 3. Frontend Architecture (React + Tailwind)
+- **Layout System**: 
+    - `UserLayout`: Contains the public shop interface (Navbar, Sidebar, Footer).
+    - `AdminLayout`: A dashboard-style layout for authorized personnel only.
+- **State Management**: React Context API for global state (Cart, User Auth, Location).
+- **Protected Routing**: Custom `ProtectedRoute` and `AdminRoute` components to manage session-based access.
+
+### 4. Workflow Diagram
+```text
+[User Browser] <---> [React SPA (Vite)] <---> [Firebase Auth]
+                             |
+                             +------> [Laravel API] <---> [MongoDB Atlas]
+```
+
 ## 📂 Project Structure
 
 ```text

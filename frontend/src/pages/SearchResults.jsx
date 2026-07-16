@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { products } from '../data/products';
 import ProductCard from '../components/ProductCard';
 
 const SearchResults = () => {
   const query = new URLSearchParams(useLocation().search).get('q');
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const searchResults = products.filter(p =>
-    p.name.toLowerCase().includes(query?.toLowerCase() || '') ||
-    p.category.toLowerCase().includes(query?.toLowerCase() || '')
-  );
+  useEffect(() => {
+    setLoading(true);
+    fetch('http://localhost:8000/api/products')
+      .then(res => res.json())
+      .then(data => {
+        const filtered = data.filter(p =>
+          p.name.toLowerCase().includes(query?.toLowerCase() || '') ||
+          p.category.toLowerCase().includes(query?.toLowerCase() || '')
+        );
+        setSearchResults(filtered);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error searching products:', err);
+        setLoading(false);
+      });
+  }, [query]);
+
+  if (loading) return <div className="px-[5%] py-24 text-center">Searching...</div>;
 
   return (
     <div className="px-[5%] py-10 min-h-[80vh] bg-white">
@@ -23,7 +39,7 @@ const SearchResults = () => {
       {searchResults.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6">
           {searchResults.map(product => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard key={product.id || product._id} {...product} id={product.id || product._id} />
           ))}
         </div>
       ) : (

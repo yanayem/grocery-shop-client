@@ -62,8 +62,15 @@ const Registration = () => {
       toast.success('Account created successfully!');
       navigate('/');
     } catch (error) {
-      console.error('Registration error:', error.message);
-      toast.error(error.message);
+      console.error('Registration error:', error.code, error.message);
+      let errorMsg = 'Failed to create account';
+
+      if (error.code === 'auth/email-already-in-use') errorMsg = 'This email is already registered';
+      if (error.code === 'auth/invalid-email') errorMsg = 'Invalid email address';
+      if (error.code === 'auth/weak-password') errorMsg = 'Password should be at least 6 characters';
+      if (error.code === 'auth/operation-not-allowed') errorMsg = 'Email/Password sign-up is not enabled in Firebase Console';
+
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

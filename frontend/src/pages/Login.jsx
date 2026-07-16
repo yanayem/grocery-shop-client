@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, userData } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -16,10 +16,14 @@ const Login = () => {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (currentUser) {
-      navigate('/');
+    if (currentUser && userData) {
+      if (userData.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, userData, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,12 +32,12 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Successfully logged in!');
-      navigate('/');
+      // Redirection will be handled by useEffect after userData is synced
     } catch (error) {
       console.error('Login error:', error.message);
       let errorMsg = 'Failed to login';
       if (error.code === 'auth/user-not-found') errorMsg = 'No account found with this email';
-      if (error.code === 'auth/wrong-password') errorMsg = 'Incorrect password';
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') errorMsg = 'Incorrect password';
       toast.error(errorMsg);
     } finally {
       setLoading(false);

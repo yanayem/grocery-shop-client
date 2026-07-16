@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Heart, ShieldCheck, Clock, Star } from 'lucide-react';
+import { ShoppingBasket, Apple, Droplets, Cookie, Coffee, ArrowRight, Heart, ShieldCheck, Clock, Star, LayoutGrid } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import ProductSlider from '../components/ProductSlider';
-import { products } from '../data/products';
+import Loader from '../components/Loader';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [prodRes, catRes] = await Promise.all([
+          fetch('http://localhost:8000/api/products'),
+          fetch('http://localhost:8000/api/categories')
+        ]);
+
+        const prodData = await prodRes.json();
+        const catData = await catRes.json();
+
+        setProducts(prodData);
+        setCategories(catData.filter(c => c.level === 0 || !c.parent_id));
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <Loader fullPage />;
+
+  const getCategoryIcon = (name) => {
+    const n = name.toLowerCase();
+    if (n.includes('veg')) return ShoppingBasket;
+    if (n.includes('fruit')) return Apple;
+    if (n.includes('dairy') || n.includes('egg')) return Droplets;
+    if (n.includes('grain') || n.includes('rice')) return Cookie;
+    if (n.includes('spice') || n.includes('oil')) return Coffee;
+    return LayoutGrid;
+  };
 
   // Filter some featured products for the slider
   const featuredProducts = products.slice(0, 8);
@@ -59,11 +97,17 @@ const Home = () => {
       <section className="px-[5%] py-[80px]">
         <h2 className="text-[2.2rem] mb-[50px] text-center font-extrabold text-gray-800">Explore by Category</h2>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-[30px]">
-          <CategoryBox id="vegetables" title="Vegetables" Icon={ShoppingBasket} color="#237227" bg="#f0f7f1" navigate={navigate} />
-          <CategoryBox id="fruits-vegetables" title="Fresh Fruits" Icon={Apple} color="#FFAA00" bg="#fff9f0" navigate={navigate} />
-          <CategoryBox id="dairy-eggs" title="Dairy & Eggs" Icon={Droplets} color="#519A66" bg="#f2f9f5" navigate={navigate} />
-          <CategoryBox id="bakery" title="Bakery Items" Icon={Cookie} color="#FFAA00" bg="#fffbf0" navigate={navigate} />
-          <CategoryBox id="beverages" title="Beverages" Icon={Coffee} color="#237227" bg="#f1f6f2" navigate={navigate} />
+          {categories.map(cat => (
+            <CategoryBox
+              key={cat.id || cat._id}
+              id={cat.slug}
+              title={cat.name}
+              Icon={getCategoryIcon(cat.name)}
+              color={cat.color || '#237227'}
+              bg={`${cat.color || '#237227'}10`}
+              navigate={navigate}
+            />
+          ))}
         </div>
       </section>
 
@@ -77,7 +121,7 @@ const Home = () => {
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-[25px]">
           {products.slice(0, 10).map(product => (
-            <ProductCard key={product.id} {...product} />
+            <ProductCard key={product.id || product._id} {...product} id={product.id || product._id} />
           ))}
         </div>
       </section>
